@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easter Special | For Her</title>
+    <style>
+        :root {
+            --gold: #ffd700;
+            --purple: #4b0082;
+            --soft-red: #8b0000;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; font-family: 'Times New Roman', serif;
+            /* Background inayobadilika rangi taratibu */
+            animation: bgChange 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgChange {
+            0% { background-color: #0a0a2a; }    /* Dark Blue */
+            33% { background-color: #2e0854; }   /* Purple */
+            66% { background-color: #4a0404; }   /* Deep Red */
+            100% { background-color: #3d2b00; }  /* Dark Gold/Bronze */
+        }
+
+        /* Clickable Overlay - Popote anapogusa */
+        .click-area {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100; cursor: pointer;
+        }
+
+        /* Layer ya Bubbles na Stars - Zipo juu ya picha (z-index kubwa) */
+        #effects-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 50; 
+        }
+
+        /* Bubbles za rangi ya maji */
+        .bubble {
+            position: absolute; bottom: -100px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+            animation: floatUp var(--d) linear infinite;
+        }
+
+        /* Nyota za Dhahabu zinazopaa */
+        .gold-star {
+            position: absolute; color: var(--gold);
+            text-shadow: 0 0 10px var(--gold);
+            animation: starMagic var(--d) infinite ease-in-out;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) translateX(30px); opacity: 0; }
+        }
+
+        @keyframes starMagic {
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; transform: translateY(-50vh) scale(1.2) rotate(180deg); }
+            100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
+        }
+
+        /* Picha na Stages */
+        .container {
+            position: relative; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .stage {
+            position: absolute; max-width: 450px; width: 85%;
+            transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0; transform: scale(0.7);
+            z-index: 5;
+        }
+
+        .active { opacity: 1 !important; transform: scale(1) !important; }
+
+        #stage1 { opacity: 1; transform: scale(1); }
+        
+        #stage1 img { width: 100%; animation: pulse 3s infinite; }
+        #stage2 img { width: 100%; border-radius: 50%; box-shadow: 0 0 50px var(--gold); }
+        #stage3 img { width: 100%; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.03); filter: brightness(1.2); }
+        }
+
+        .instruction {
+            position: absolute; bottom: 10%; color: gold;
+            letter-spacing: 2px; text-transform: uppercase;
+            font-size: 0.9rem; animation: blink 2s infinite;
+            z-index: 10;
+        }
+        @keyframes blink { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.2; } }
+
+    </style>
+</head>
+<body>
+
+    <div id="effects-layer"></div>
+    <div class="click-area" onclick="startEasterMagic()"></div>
+
+    <audio id="bgMusic" loop>
+        <source src="pasaka.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <div id="stage1" class="stage">
+            <img src="yai.png" alt="Opening Egg">
+            <div class="instruction">Tap Anywhere to Open Your Gift 🎁</div>
+        </div>
+
+        <div id="stage2" class="stage">
+            <img src="msalaba.png" alt="Holy Cross">
+        </div>
+
+        <div id="stage3" class="stage">
+            <img src="ujumbe.png" alt="Love Message">
+        </div>
+    </div>
+
+    <script>
+        // Kutengeneza Bubbles na Nyota juu ya picha
+        const layer = document.getElementById('effects-layer');
+
+        function createEffects() {
+            // Tengeneza Bubbles (Rangi ya maji)
+            for (let i = 0; i < 20; i++) {
+                let b = document.createElement('div');
+                b.className = 'bubble';
+                let size = Math.random() * 60 + 20 + 'px';
+                b.style.width = size;
+                b.style.height = size;
+                b.style.left = Math.random() * 100 + '%';
+                b.style.setProperty('--d', Math.random() * 8 + 4 + 's');
+                b.style.animationDelay = Math.random() * 5 + 's';
+                layer.appendChild(b);
+            }
+
+            // Tengeneza Nyota za Dhahabu zinazopaa
+            for (let i = 0; i < 30; i++) {
+                let s = document.createElement('div');
+                s.className = 'gold-star';
+                s.innerHTML = '✦'; // Sparkle star symbol
+                s.style.left = Math.random() * 100 + '%';
+                s.style.fontSize = Math.random() * 20 + 10 + 'px';
+                s.style.setProperty('--d', Math.random() * 6 + 3 + 's');
+                s.style.animationDelay = Math.random() * 10 + 's';
+                layer.appendChild(s);
+            }
+        }
+
+        createEffects();
+
+        let magicDone = false;
+        function startEasterMagic() {
+            if (magicDone) return;
+            magicDone = true;
+
+            const music = document.getElementById('bgMusic');
+            const s1 = document.getElementById('stage1');
+            const s2 = document.getElementById('stage2');
+            const s3 = document.getElementById('stage3');
+
+            music.play();
+
+            // Transition 1: Yai linatoka (Zoom out)
+            s1.style.transform = "scale(0) rotate(-45deg)";
+            s1.style.opacity = "0";
+
+            // Transition 2: Msalaba unaingia
+            setTimeout(() => {
+                s2.classList.add('active');
+            }, 1000);
+
+            // Transition 3: Ujumbe wa mwisho unachukua nafasi (Slowly)
+            setTimeout(() => {
+                s2.style.opacity = "0.3";
+                s2.style.filter = "blur(15px)";
+                s3.classList.add('active');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
